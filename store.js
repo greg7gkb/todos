@@ -1,8 +1,8 @@
 import { createStore, combineReducers } from 'redux';
-import placeReducer from './reducers/placeReducer';
+import todoReducer from './reducers/todoReducer';
 
 const rootReducer = combineReducers({
-  places: placeReducer
+  todos: todoReducer
 });
 
 const configureStore = () => {

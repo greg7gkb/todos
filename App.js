@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import ListItem from './components/ListItem';
 import { connect } from 'react-redux';
-import { addPlace } from './actions/place';
+import { addTodo, reorder } from './actions/todos';
 import DraggableFlatList from 'react-native-draggable-flatlist'
 import {
   StyleSheet,
@@ -24,8 +24,7 @@ class App extends Component {
   }
 
   state = {
-    placeName: '',
-    places: []
+    todos: []
   }
 
   componentDidMount() {
@@ -39,33 +38,26 @@ class App extends Component {
     }
   }
 
-  placeSubmitHandler = () => {
-    if(this.state.placeName.trim() === '') {
-      return;
-    }
-    this.props.add(this.state.placeName);
-  }
-
-  placeNameChangeHandler = (value) => {
-    this.setState({
-      placeName: value
-    });
-  }
-
-  placesOutput = () => {
+  todosOutput = () => {
     return (
       <DraggableFlatList
-        data = { this.props.places }
+        data = { this.props.todos }
         keyExtractor={(item, index) => {
-          return index.toString();
+          return `key-${index}`
         }}
-        onMoveEnd={({ data }) => this.setState({ data })}
+        onMoveEnd={({ data }) => this.props.reorder(data)}
         renderItem = { (info, index, move, moveEnd, isActive) => (
           <ListItem
-            placeName={info.item.value}
+            name={info.item.value}
             isActive={isActive}
-            move={move}
-            moveEnd={moveEnd}
+            move={() => {
+              console.log('Move started: ' + JSON.stringify(info));
+              move;
+            }}
+            moveEnd={() => {
+              console.log('Move finished: ' + JSON.stringify(info));
+              moveEnd;
+            }}
             />
         )}
       />
@@ -86,7 +78,7 @@ class App extends Component {
         </View>
 
         {/* Output list */}
-        { this.placesOutput() }
+        { this.todosOutput() }
 
       </View>
     );
@@ -116,14 +108,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    places: state.places.places
+    todos: state.todos.todos
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     add: (name) => {
-      dispatch(addPlace(name))
+      dispatch(addTodo(name))
     },
     reorder: (data) => {
       dispatch(reorder(data))

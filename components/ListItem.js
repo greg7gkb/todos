@@ -7,7 +7,7 @@ const ListItem = (props) => {
         [styles.listItem,
         {backgroundColor: props.isActive ? 'lightblue' : 'transparent'}]
         }>
-        <Text style={styles.itemText}>{props.placeName}</Text>
+        <Text style={styles.itemText}>{props.name}</Text>
         <TouchableOpacity
           onPressIn={props.move}
           onLongPress={props.move}
