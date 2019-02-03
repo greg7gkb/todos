@@ -1,4 +1,4 @@
-import { ADD_TODO, REORDER } from './types';
+import { ADD_TODO, REMOVE_TODO } from './types';
 
 export const addTodo = todoName => {
   return {
@@ -7,9 +7,9 @@ export const addTodo = todoName => {
   }
 }
 
-export const reorder = data => {
+export const removeTodo = index => {
   return {
-    type: REORDER,
-    payload: data
+    type: REMOVE_TODO,
+    payload: index
   }
 }

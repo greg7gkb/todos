@@ -2,16 +2,13 @@ import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome'
 import ListItem from './components/ListItem';
 import { connect } from 'react-redux';
-import { addTodo, reorder } from './actions/todos';
+import { addTodo, removeTodo } from './actions/todos';
 import {
   StyleSheet,
   View,
-  TextInput,
-  Button,
   Text,
   TouchableOpacity,
   FlatList,
-  Image,
 } from 'react-native';
 
 var counter = 0;
@@ -22,18 +19,19 @@ class App extends Component {
     super(props);
   }
 
+  // Greg: this seems be duplicated in todoReducer.initialState - remove one?
   state = {
     todos: []
   }
 
   componentDidMount() {
     if (__DEV__) {
-      this.props.add('Annapolis');
-      this.props.add('Arkansas');
-      this.props.add('Connecticuit');
-      this.props.add('Kentucky');
-      this.props.add('Missouri');
-      this.props.add('Texas');
+      this.props.add('Wash yer clothes');
+      this.props.add('Wash yer self');
+      this.props.add('Eat some toast');
+      this.props.add('Buy a shoe');
+      this.props.add('Drink more water');
+      this.props.add('Do more stuff');
     }
   }
 
@@ -44,11 +42,13 @@ class App extends Component {
         keyExtractor={(item, index) => {
           return `key-${index}`
         }}
-        renderItem = { (info) => (
-          <ListItem
-            name={info.item.value}
-            />
-        )}
+        renderItem = { (info) => {
+          return (
+            <ListItem
+              name={info.item.value}
+              action={() => {this.props.remove(info.index)}}
+              />
+        )}}
       />
     )
   }
@@ -58,9 +58,12 @@ class App extends Component {
       <View style={styles.container}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Todos</Text>
-          <TouchableOpacity onPress={() => {this.addTodo()}}>
+          <TouchableOpacity onPress={() => {
+              let newTodo = 'Do Stuff_' + counter++;
+              this.props.add(newTodo);
+            }}>
             <Icon
-              style={[styles.title, {fontSize: 36, marginRight: 12, color: 'blue'}]}
+              style={[styles.title, {fontSize: 36, marginRight: 4, color: 'green'}]}
               name="plus-circle"
               />
           </TouchableOpacity>
@@ -72,11 +75,6 @@ class App extends Component {
       </View>
     );
   };
-
-  addTodo() {
-    let newTodo = 'Do Stuff_' + counter++;
-    this.props.add(newTodo);
-  }
 }
 
 const styles = StyleSheet.create({
@@ -105,6 +103,9 @@ const mapDispatchToProps = dispatch => {
   return {
     add: (name) => {
       dispatch(addTodo(name))
+    },
+    remove: (index) => {
+      dispatch(removeTodo(index))
     },
   }
 }

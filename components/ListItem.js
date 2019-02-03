@@ -1,10 +1,17 @@
 import React from 'react';
-import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const ListItem = (props) => {
     return (
       <View style = {styles.listItem}>
         <Text style={styles.itemText}>{props.name}</Text>
+        <TouchableOpacity onPress={props.action}>
+          <Icon
+            style={[styles.itemText, {color: 'red'}]}
+            name="minus"
+            />
+        </TouchableOpacity>
       </View>
     );
 }
