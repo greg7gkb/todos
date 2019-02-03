@@ -10,10 +10,6 @@ const todoReducer = (state = initialState, action) => {
   console.log('Reducer - action: ' + JSON.stringify(action));
 
   switch(action.type) {
-    case REORDER:
-      return {
-        ...action.payload
-      }
     case ADD_TODO:
       return {
         ...state,

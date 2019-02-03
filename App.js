@@ -3,7 +3,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import ListItem from './components/ListItem';
 import { connect } from 'react-redux';
 import { addTodo, reorder } from './actions/todos';
-import DraggableFlatList from 'react-native-draggable-flatlist'
 import {
   StyleSheet,
   View,
@@ -40,24 +39,14 @@ class App extends Component {
 
   todosOutput = () => {
     return (
-      <DraggableFlatList
+      <FlatList
         data = { this.props.todos }
         keyExtractor={(item, index) => {
           return `key-${index}`
         }}
-        onMoveEnd={({ data }) => this.props.reorder(data)}
-        renderItem = { (info, index, move, moveEnd, isActive) => (
+        renderItem = { (info) => (
           <ListItem
             name={info.item.value}
-            isActive={isActive}
-            move={() => {
-              console.log('Move started: ' + JSON.stringify(info));
-              move;
-            }}
-            moveEnd={() => {
-              console.log('Move finished: ' + JSON.stringify(info));
-              moveEnd;
-            }}
             />
         )}
       />
@@ -116,9 +105,6 @@ const mapDispatchToProps = dispatch => {
   return {
     add: (name) => {
       dispatch(addTodo(name))
-    },
-    reorder: (data) => {
-      dispatch(reorder(data))
     },
   }
 }

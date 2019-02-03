@@ -3,18 +3,8 @@ import { Image, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 const ListItem = (props) => {
     return (
-      <View style = {
-        [styles.listItem,
-        {backgroundColor: props.isActive ? 'lightblue' : 'transparent'}]
-        }>
+      <View style = {styles.listItem}>
         <Text style={styles.itemText}>{props.name}</Text>
-        <TouchableOpacity
-          onPressIn={props.move}
-          onLongPress={props.move}
-          onPressOut={props.moveEnd}
-          >
-          <Image style={styles.itemImg} source={require('../img/hammy.png')}/>
-        </TouchableOpacity>
       </View>
     );
 }
@@ -33,10 +23,6 @@ const styles = StyleSheet.create({
   itemText: {
     color: '#000',
     fontSize: 24,
-  },
-  itemImg: {
-    width: 36,
-    height: 36,
   },
 });
 
