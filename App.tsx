@@ -13,9 +13,15 @@ import {
 
 var counter = 0;
 
-class App extends Component {
+interface AppProps {
+  add: (todo: string) => void;
+  remove: (index: number) => void;
+  todos: any;
+}
 
-  constructor(props) {
+class App extends Component<AppProps> {
+
+  constructor(props: any) {
     super(props);
   }
 
@@ -42,7 +48,7 @@ class App extends Component {
         keyExtractor={(item, index) => {
           return `key-${index}`
         }}
-        renderItem = { (info) => {
+        renderItem = { (info: any) => {
           return (
             <ListItem
               name={info.item.value}
@@ -93,18 +99,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: any) => {
   return {
     todos: state.todos.todos
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch: any) => {
   return {
-    add: (name) => {
+    add: (name: string) => {
       dispatch(addTodo(name))
     },
-    remove: (index) => {
+    remove: (index: number) => {
       dispatch(removeTodo(index))
     },
   }
