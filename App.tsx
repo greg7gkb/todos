@@ -3,6 +3,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import ListItem from './components/ListItem';
 import { connect } from 'react-redux';
 import { addTodo, removeTodo } from './actions/todos';
+import firebase from 'react-native-firebase';
 import {
   StyleSheet,
   View,
@@ -30,7 +31,7 @@ class App extends Component<AppProps> {
     todos: []
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (__DEV__) {
       this.props.add('Wash yer clothes');
       this.props.add('Wash yer self');
@@ -39,6 +40,13 @@ class App extends Component<AppProps> {
       this.props.add('Drink more water');
       this.props.add('Do more stuff');
     }
+
+    //TODO: You: Do firebase things
+    const { user } = await firebase.auth().signInAnonymously();
+    console.log('User -> ', user.toJSON())
+
+    // console.log('Logging firebase event...')
+    // await firebase.analytics().logEvent('foo', { bar: '123'});
   }
 
   todosOutput = () => {

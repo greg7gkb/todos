@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "457114549321",
+    "firebase_url": "https://sandbox-gkb.firebaseio.com",
+    "project_id": "sandbox-gkb",
+    "storage_bucket": "sandbox-gkb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457114549321:android:76e6cd7e03e220f6",
+        "android_client_info": {
+          "package_name": "com.todoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "457114549321-0pk92cl9t6ui8550bs4n8le3007uht53.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7QZUBr5nAYECzCcNSV2wmwgVkPdbGIzY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
