@@ -4,7 +4,7 @@ const initialState = {
   todos: []
 };
 
-const todoReducer = (state = initialState, action) => {
+const todoReducer = (state = initialState, action: any) => {
 
   console.log('Reducer - state: ' + JSON.stringify(state));
   console.log('Reducer - action: ' + JSON.stringify(action));
@@ -18,10 +18,9 @@ const todoReducer = (state = initialState, action) => {
 
     case ADD_TODO:
       return {
-        ...state,
         todos: state.todos.concat({
-          key: Math.random(),
-          value: action.payload
+          key: action.payload.key,
+          value: action.payload.value
         })
       };
 

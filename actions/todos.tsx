@@ -1,9 +1,10 @@
 import { ADD_TODO, REMOVE_TODO } from './types';
 
-export const addTodo = (todoName: string) => {
+export const addTodo = (value: string, key?: number) => {
+  if (key === undefined) key = Math.random();
   return {
     type: ADD_TODO,
-    payload: todoName
+    payload: {value: value, key: key}
   }
 }
 

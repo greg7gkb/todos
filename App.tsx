@@ -3,7 +3,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import ListItem from './components/ListItem';
 import { connect } from 'react-redux';
 import { addTodo, removeTodo } from './actions/todos';
-import firebase from 'react-native-firebase';
+import firebase, { RNFirebase } from 'react-native-firebase';
 import {
   StyleSheet,
   View,
@@ -11,42 +11,54 @@ import {
   TouchableOpacity,
   FlatList,
 } from 'react-native';
+import { any } from 'prop-types';
+require ('json-circular-stringify');
 
 var counter = 0;
+var docRef: any;
 
 interface AppProps {
-  add: (todo: string) => void;
+  add: (value: string, key?: number) => void;
   remove: (index: number) => void;
   todos: any;
 }
 
 class App extends Component<AppProps> {
 
+  private fb: RNFirebase.firestore.CollectionReference;
+  private unsubscribe: any; // GKB: How to properly define type?
+
   constructor(props: any) {
     super(props);
-  }
-
-  // Greg: this seems be duplicated in todoReducer.initialState - remove one?
-  state = {
-    todos: []
+    this.fb = firebase.firestore().collection('todos');
   }
 
   async componentDidMount() {
-    if (__DEV__) {
-      this.props.add('Wash yer clothes');
-      this.props.add('Wash yer self');
-      this.props.add('Eat some toast');
-      this.props.add('Buy a shoe');
-      this.props.add('Drink more water');
-      this.props.add('Do more stuff');
-    }
-
-    //TODO: You: Do firebase things
     const { user } = await firebase.auth().signInAnonymously();
-    console.log('User -> ', user.toJSON())
+    console.log('User -> ', user.toJSON());
+    docRef = this.fb.doc(user.uid);
 
-    // console.log('Logging firebase event...')
-    // await firebase.analytics().logEvent('foo', { bar: '123'});
+    this.unsubscribe = docRef.onSnapshot(this.onCollectionUpdate);
+  }
+
+  unsubscribeFbListeners() {
+    console.log('unsubscribing to firestore');
+    this.unsubscribe();
+    this.unsubscribe = null;
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFbListeners();
+  }
+
+  onCollectionUpdate = (querySnapshot: any) => {
+    this.unsubscribeFbListeners(); // Load once then ignore any further updates
+
+    console.log('querySnapshot: ' + JSON.stringify(querySnapshot));
+    for (let t of querySnapshot._data.todos) {
+      console.log('todo: ' + JSON.stringify(t));
+      this.props.add(t.value, t.key);
+    }
   }
 
   todosOutput = () => {
@@ -115,8 +127,8 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    add: (name: string) => {
-      dispatch(addTodo(name))
+    add: (value: string, key?: number) => {
+      dispatch(addTodo(value, key))
     },
     remove: (index: number) => {
       dispatch(removeTodo(index))
