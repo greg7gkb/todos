@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@types/react-redux": "^7.0.1",
+    "json-circular-stringify": "^0.0.1",
     "react": "16.6.3",
     "react-native": "0.58.3",
     "react-native-firebase": "^5.2.1",
